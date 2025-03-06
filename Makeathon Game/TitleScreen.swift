@@ -25,7 +25,7 @@ class TitleScreen: SKScene {
     // Will load any level created
     func loadGame(level: Int) {
         guard let skView = self.view as SKView? else {
-            print("Cound not get SKview")
+            print("Could not get SKView")
             return
         }
         

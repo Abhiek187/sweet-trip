@@ -94,7 +94,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             GameScene.score = 0 // Reset score every time player restarts
             let skView = self.view as SKView?
-            skView?.isPaused = false // Unpauses the game
+            self.isPaused = false // Unpauses the game
             guard let scene = GameScene(fileNamed: "Level_\(GameScene.levelNumber)") as GameScene? else {
                 return
             }
@@ -110,7 +110,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             // Same as loadGame()
             guard let skView = self.view as SKView? else {
-                print("Cound not get SKview")
+                print("Could not get SKView")
                 return
             }
             
@@ -119,7 +119,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
             
-            skView.isPaused = false
+            self.isPaused = false
             scene.scaleMode = .aspectFit
             skView.showsFPS = true
             let fade = SKTransition.fade(withDuration: 1)
@@ -189,20 +189,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(loseMessage)
             gameState = .gameOver
             playerScoreUpdate()
-            self.view?.isPaused = true
+            self.isPaused = true
         }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
         // Called when two bodies make contact
-        if gameState != .active { // Prevents this function from accidently running twice between levels
+        if gameState != .active { // Prevents this function from accidentally running twice between levels
             return // print("Hah! Take that, glitch!")
         }
         
         let contactA = contact.bodyA
         let contactB = contact.bodyB
-        let nodeA = contactA.node!
-        let nodeB = contactB.node!
+        guard let nodeA = contactA.node else { return }
+        guard let nodeB = contactB.node else { return }
         
         // We don't know who made contact with whom
         if nodeA.name == "ground" || nodeB.name == "ground" {
@@ -228,7 +228,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(continueMessage)
             gameState = .gameOver
             buttonContinue.isHidden = false
-            self.view?.isPaused = true
+            self.isPaused = true
         }
     }
 }
